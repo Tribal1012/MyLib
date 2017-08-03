@@ -1,0 +1,9 @@
+﻿  Reg_Control.cpp
+c:\users\tribal\documents\visual studio 2015\projects\reg_control\reg_control\reg_control.cpp(16): warning C4473: 'printf': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
+  c:\users\tribal\documents\visual studio 2015\projects\reg_control\reg_control\reg_control.cpp(16): note: 자리 표시자 및 해당 매개 변수에는 variadic 인수가 1개 필요하지만 0개가 제공되었습니다.
+  c:\users\tribal\documents\visual studio 2015\projects\reg_control\reg_control\reg_control.cpp(16): note: 누락된 variadic 인수 1이(가) 서식 문자열 '%x'에 필요합니다.
+c:\users\tribal\documents\visual studio 2015\projects\reg_control\reg_control\reg_control.cpp(48): warning C4473: 'printf': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
+  c:\users\tribal\documents\visual studio 2015\projects\reg_control\reg_control\reg_control.cpp(48): note: 자리 표시자 및 해당 매개 변수에는 variadic 인수가 1개 필요하지만 0개가 제공되었습니다.
+  c:\users\tribal\documents\visual studio 2015\projects\reg_control\reg_control\reg_control.cpp(48): note: 누락된 variadic 인수 1이(가) 서식 문자열 '%x'에 필요합니다.
+  Reg_Control.vcxproj -> C:\Users\Tribal\documents\visual studio 2015\Projects\Reg_Control\x64\Debug\Reg_Control.exe
+  Reg_Control.vcxproj -> C:\Users\Tribal\documents\visual studio 2015\Projects\Reg_Control\x64\Debug\Reg_Control.pdb (Full PDB)
