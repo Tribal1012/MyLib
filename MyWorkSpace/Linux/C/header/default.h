@@ -35,14 +35,14 @@ void hexdump(uint8 *p, uint32 len)
 	for(i=0; i<len; i++)
 	{
 		if(i%16==0)
-			printf("0x%08x  ",&buff[i]);
-		printf("%02x ",buff[i]);
+			printf("0x%08x  ", &p[i]);
+		printf("%02x ", p[i]);
 		if(i%16-15==0)
 		{
 			uint32 j;
 			printf("  ");
 			for(j=i-15;j<=i;j++)
-            	printchar(buff[j]);
+            	printchar(p[j]);
 			printf("\n");
 		}
 	}
@@ -54,7 +54,7 @@ void hexdump(uint8 *p, uint32 len)
 		for(j=0;j<spaces;j++)
 			printf(" ");
 		for(j=i-i%16;j<len;j++)
-			printchar(buff[j]);
+			printchar(p[j]);
 	}
 	printf("\n");
 }
@@ -65,14 +65,14 @@ void fhexdump(FILE* fp, uint8 *p, uint32 len)
 	for(i=0; i<len; i++)
 	{
 		if(i%16==0)
-			fprintf(fp, "0x%08x  ",&buff[i]);
-		fprintf(fp, "%02x ",buff[i]);
+			fprintf(fp, "0x%08x  ", &p[i]);
+		fprintf(fp, "%02x ", p[i]);
 		if(i%16-15==0)
 		{
 			uint32 j;
 			fprintf(fp, "  ");
 			for(j=i-15;j<=i;j++)
-            	fprintchar(fp, buff[j]);
+            	fprintchar(fp, p[j]);
 			fprintf(fp, "\n");
 		}
 	}
@@ -84,7 +84,7 @@ void fhexdump(FILE* fp, uint8 *p, uint32 len)
 		for(j=0;j<spaces;j++)
 			fprintf(fp, " ");
 		for(j=i-i%16;j<len;j++)
-			fprintchar(fp, buff[j]);
+			fprintchar(fp, p[j]);
 	}
 	fprintf(fp, "\n");
 }
