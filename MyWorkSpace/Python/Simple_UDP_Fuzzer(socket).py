@@ -159,10 +159,10 @@ def create_packet(protocol=None, src_mac=None, dst_mac=None, src_ip=None, dst_ip
 	ip_header = create_raw_ip_header(protocol, src_ip, dst_ip, data_len)
 	udp_header = create_raw_udp_header(protocol, src_ip, dst_ip, src_port, dst_port, data)
 
-	packet = ip_header + udp_header + data
+	packet = ether_header + ip_header + udp_header + data
 
 	print "[+] ==================== packet ===================="
-	print hexdump(packet)
+	hexdump(packet)
 
 	return packet
 
