@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from scapy.all import IP, TCP, UDP, sr1
+from scapy.all import *
 from random import randint
 from time import sleep
 import sys
@@ -61,7 +61,7 @@ def create_packet(protocol=None, src_ip=None, dst_ip=None, src_port=None, dst_po
 		print "Unknown protocol"
 		return None
 
-	packet = packet/get_random_data(randint(1,65535))
+	packet = packet/get_random_data(randint(1,1024))
 
 	return packet
 
@@ -72,8 +72,11 @@ def fuzzing(netinfo):
 		with open("result.log", "w") as fh:
 			fh.write(str(packet))
 
-		sr1(packet,timeout=1)
-		sleep(0.5)
+		packet.show()
+		result = sr1(packet,timeout=1)
+		if result:
+			result.show()
+		sleep(1)
 
 def config_netinfo():
 	argv = sys.argv
