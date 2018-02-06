@@ -6,11 +6,6 @@ import sys
 import getopt
 import re
 
-"""
-dst_ip = '192.168.52.130'
-src_port = [18888]
-dst_port = [8888]
-"""
 
 def banner():
 	print "==================================================="

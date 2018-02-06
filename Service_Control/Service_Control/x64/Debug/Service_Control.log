@@ -1,5 +1,0 @@
-﻿  stdafx.cpp
-  Service_Control.cpp
-c:\users\tribal\documents\visual studio 2015\projects\service_control\service_control\service_control.cpp(28): warning C4101: 'srvstat' :참조되지 않은 지역 변수입니다.
-  Service_Control.vcxproj -> c:\users\tribal\documents\visual studio 2015\Projects\Service_Control\x64\Debug\Service_Control.exe
-  Service_Control.vcxproj -> c:\users\tribal\documents\visual studio 2015\Projects\Service_Control\x64\Debug\Service_Control.pdb (Full PDB)
