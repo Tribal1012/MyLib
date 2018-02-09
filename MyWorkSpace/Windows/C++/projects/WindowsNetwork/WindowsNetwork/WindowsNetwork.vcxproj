@@ -151,7 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="define.h" />
-    <ClInclude Include="network.h" />
+    <ClInclude Include="socket.h" />
     <ClInclude Include="tcp.h" />
     <ClInclude Include="type.h" />
   </ItemGroup>

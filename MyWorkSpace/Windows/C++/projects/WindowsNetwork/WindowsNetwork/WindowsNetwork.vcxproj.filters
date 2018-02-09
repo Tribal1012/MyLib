@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="network.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="tcp.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -25,6 +22,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="define.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="socket.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
