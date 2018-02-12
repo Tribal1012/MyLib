@@ -1,5 +1,6 @@
 #pragma once
 #include <WinSock2.h>
+#include <Ws2tcpip.h>
 #include "type.h"
 #include "define.h"
 #include "socket.h"
@@ -13,68 +14,127 @@ typedef uint16 PORT_ADDR;
 namespace Tribal {
 	static uint8 localhost[] = LOCALHOST;
 
-	class TCPObject {
+	class TCPSocket :public Socket {
 	protected:
-		uint8	         m_ip[16];
-		PORT_ADDR        m_port;
-		TCPSocketAction* m_action;
-		SOCKET           m_sock;
+		sockaddr_in m_sa;
 
 	protected:
 		/*
-		   This function used for store IP Address and Port Address in TCPObject.
-		   But it's use isn't implemented.
-		 */
-		void SetAddress(IP_ADDR ip, PORT_ADDR port) {
-			puint8 src = (ip != null) ? ip : localhost;		// source pointer
-			puint8 dst = this->m_ip;							// destination pointer
+		Create a socket.
+		If socket() return error, this function will return -1.
+		*/
+		SOCKET CreateSocket() override {
+			m_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-			for (uint32 i = 0; i < ADDR_LEN; i++)
-				*dst++ = *src++;
+			return m_sock;
+		}
+		
+		void CloseSocket() override {
+			closesocket(m_sock);
+		}
 
-			this->m_port = port;
+		uint32 SendData(ccData data, cuint32 len) override {
+			return send(m_sock, data, len, 0);
+		}
+
+		uint32 RecvData(cData data, cuint32 max) override {
+			return recv(m_sock, data, max, 0);
 		}
 
 	public:
-		TCPObject(IP_ADDR ip, PORT_ADDR port) {
-			this->m_action = TCPSocketActionObject::GetInstance();
-			this->m_sock = this->m_action->CreateSocket();
-
-			SetAddress(ip, port);
+		TCPSocket():Socket() {
+			ZeroMemory(&m_sa, sizeof(sockaddr_in));
 		}
 
-		virtual ~TCPObject() {
-			CLEANUPOBJECT(m_action)
-		}
+		virtual ~TCPSocket() {}
 
-		virtual bool execute() = 0;
+		// send override
+		// recv override
 	};
 
-	class TCPServer : public TCPObject {
+	class TCPServer :public TCPSocket {
 	private:
 		SOCKET m_clnt_sock;
+		sockaddr_in m_clnt_sa;
+
+	private:
+		TCPServer() :TCPSocket() {
+			ZeroMemory(&m_clnt_sa, sizeof(sockaddr_in));
+		}
+
+		/*
+		    execute Socket API function(bind(), listen()).
+		    This function require server's Port Address with own socket for bind.
+		 */
+		bool ListenServer(PORT_ADDR port) {
+			uint32 result = 0;
+
+			m_sa.sin_family = AF_INET;
+			m_sa.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
+			m_sa.sin_port = htons(port);
+
+			result = bind(m_sock, (sockaddr*)&m_sa, sizeof(sockaddr_in));
+			if (result == -1) {
+				return false;
+			}
+
+			result = listen(m_sock, CLIENTCONNECT);
+			if (result == -1) {
+				return false;
+			}
+
+			return true;
+		}
 
 	public:
-		TCPServer(IP_ADDR ip, PORT_ADDR port) :TCPObject(ip, port) {}
 		~TCPServer() {}
 
-		bool execute() override {
-			m_clnt_sock = m_action->OperateServer(m_sock, m_port);
-			if (m_clnt_sock == -1) return false;
+		/*
+		    execute Socket API function(accept()).
+			server is blocked for accept.
+		 */
+		void Operate() {
+			uint32 clnt_sa_size = 0;
+
+			m_clnt_sock = accept(m_sock, (sockaddr*)&m_clnt_sa, (int*)&clnt_sa_size);
+			if (m_clnt_sock == -1) return;
+		}
+
+		/*
+		    return TCPServer's object
+		 */
+		static Socket* CreateServer(PORT_ADDR port) {
+			//TCPServer* pInstance = GetInstance<TCPServer>();
+			//pInstance->ListenServer(port);
+			TCPServer* pInstance;
+			return pInstance;
 		}
 	};
 
-	class TCPClient : public TCPObject {
+	class TCPClient : public TCPSocket {
 	private:
+		TCPClient() :TCPSocket() {}
+
 	public:
-		TCPClient(IP_ADDR ip, PORT_ADDR port) :TCPObject(ip, port) {}
 		~TCPClient() {}
 
-		bool execute() override {
-			SOCKET tmp;
+		/*
+		    execute Socket API function(connect()).
+		    This function require target's IP Address and Port Address with own socket for connect.
+		 */
+		void remote(IP_ADDR ip, PORT_ADDR port) {
+			uint32 result = 0;
 
-			tmp = m_action->OperateClient(m_sock, (char*)m_ip, m_port);
-			if (tmp == -1) return false;
+			m_sa.sin_family = AF_INET;
+#ifdef _WINSOCK_DEPRECATED_NO_WARNINGS
+			m_sa.sin_addr.S_un.S_addr = inet_addr((const char*)ip);
+#else
+			InetPton(AF_INET, (PCWSTR)ip, &m_sa.sin_addr.S_un.S_addr);
+#endif
+			m_sa.sin_port = htons(port);
+
+			result = connect(m_sock, (sockaddr*)&m_sa, sizeof(sockaddr_in));
+			if (result == -1) return;
 		}
 	};
 }

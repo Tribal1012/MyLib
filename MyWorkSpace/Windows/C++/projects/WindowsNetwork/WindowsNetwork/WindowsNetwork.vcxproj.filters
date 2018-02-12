@@ -27,5 +27,13 @@
     <ClInclude Include="socket.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="udp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
