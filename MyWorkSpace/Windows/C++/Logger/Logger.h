@@ -21,6 +21,16 @@ namespace GlobalLogger {
 		BYTE* GetStream();
 		DWORD GetStreamLength();
 
+		LogStream& operator=(__in const char* data);
+		LogStream& operator=(__in const wchar_t* data);
+		LogStream& operator=(__in LogStream& data);
+		LogStream& operator+=(__in const char* data);
+		LogStream& operator+=(__in const wchar_t* data);
+		LogStream& operator+=(__in LogStream& data);
+		LogStream operator+(__in const char* data);
+		LogStream operator+(__in const wchar_t* data);
+		LogStream operator+(__in LogStream& data);
+
 	private:
 		// std::vector<char> m_stream;
 		std::string m_stream;
@@ -61,7 +71,7 @@ namespace GlobalLogger {
 
 		friend Logger& operator << (Logger& log, LogStream& lstream);
 		friend Logger& operator << (Logger& log, LogStream* lstream);
-		
+
 		Logger& operator *(Logger& log);
 
 	private:
@@ -71,7 +81,7 @@ namespace GlobalLogger {
 		bool m_bIsOpen;
 	};
 
-	class LoggerUtil {
+	class LogUtils {
 	public:
 		static void hexdump(__in BYTE * p, __in DWORD len);
 		static void fhexdump(__in std::ofstream& out, __in BYTE * p, __in DWORD len);
